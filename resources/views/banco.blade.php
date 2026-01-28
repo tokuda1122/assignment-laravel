@@ -4,7 +4,7 @@
     <title>Bàn cờ vua</title>
     <style>
         .o-co { width: 50px; height: 50px; }
-        .den { background-color: black; }
+        .den { background-color: green; }
         .trang { background-color: white; }
     </style>
 </head>

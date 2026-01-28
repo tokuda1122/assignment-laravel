@@ -9,6 +9,7 @@ Route::get('/', function () {
 
 // 2. Gom nhóm "/product"
 Route::prefix('product')->group(function () {
+    Route::get("/", [ProductController::class, "index"]);
     
     // Trả về view product.index
     Route::get('/', function () {
@@ -40,3 +41,33 @@ Route::get('/banco/{n}', function ($n) {
 Route::fallback(function () {
     return view('error.404');
 });
+// 6/ sử dụng controller
+use App\Http\Controllers\LogginController;
+
+// Route hiển thị trang login
+Route::get('/login', [LogginController::class, 'index'])->name('login');
+
+// Route xử lý dữ liệu form gửi lên
+Route::post('/login', [LogginController::class, 'login']);
+
+
+use App\Http\Controllers\AuthController;
+
+// Commit 1
+Route::get('/signin', [AuthController::class, 'SignIn']);
+Route::post('/check-signin', [AuthController::class, 'CheckSignIn']);
+
+// Commit 2
+Route::get('/input-age', function () {
+    return view('input-age');
+});
+
+Route::post('/save-age', function (Illuminate\Http\Request $request) {
+    session(['user_age' => $request->age]); // Lưu tuổi vào session
+    return "Đã lưu tuổi. Hãy thử truy cập trang bảo vệ.";
+});
+
+// Trang yêu cầu Middleware kiểm tra tuổi
+Route::get('/protected-content', function () {
+    return "Chúc mừng! Bạn đủ tuổi để xem nội dung này.";
+})->middleware(CheckAge::class);
